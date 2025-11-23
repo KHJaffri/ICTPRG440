@@ -9,31 +9,37 @@ def myfunction (x,y,z):
     s=x+y+z
     return s
 d = myfunction (1,2,3)
+
+
 import math
 
-# Coordinates
-lat_syd = 33.8688
-lon_syd = 151.2093
-lat_melb = 37.8136
-lon_melb = 144.9631
+def haversine_distance(lat1, lon1, lat2, lon2):
+    # Radius of Earth in kilometers
+    R = 6371.0
 
-# Convert degrees to radians
-lat_syd = math.radians(lat_syd)
-lon_syd = math.radians(lon_syd)
-lat_melb = math.radians(lat_melb)
-lon_melb = math.radians(lon_melb)
+    # Convert degrees to radians
+    lat1 = math.radians(lat1)
+    lon1 = math.radians(lon1)
+    lat2 = math.radians(lat2)
+    lon2 = math.radians(lon2)
 
-# Haversine formula
-dlat = lat_melb - lat_syd
-dlon = lon_melb - lon_syd
+    # Differences
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
 
-a = math.sin(dlat / 2)**2 + math.cos(lat_syd) * math.cos(lat_melb) * math.sin(dlon / 2)**2
-c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    # Haversine formula
+    a = math.sin(dlat / 2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
-# Radius of Earth in km (average)
-R = 6371.0
+    # Distance in km
+    distance = R * c
+    return distance
 
-# Distance
-distance_km = R * c
+# Sydney and Melbourne coordinates
+lat_syd, lon_syd = 33.8688, 151.2093
+lat_melb, lon_melb = 37.8136, 144.9631
 
-print("Air distance between Sydney and Melbourne:", round(distance_km, 2), "km")
+# Calculate distance
+distance_km = haversine_distance(lat_syd, lon_syd, lat_melb, lon_melb)
+
+print("Haversine Distance between Sydney and Melbourne:", round(distance_km, 2), "km")
